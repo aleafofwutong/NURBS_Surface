@@ -267,10 +267,10 @@ if __name__ == "__main__":
     surface.knotvector_v=[0,0,0,1,1,1]
     surface.vis=VisMPL.VisCurve3D()
     surface.render()
-    print(surface.knotvector_u,surface.knotvector_v,surface.ctrlpts_size_u,surface.ctrlpts_size_v,surface.ctrlpts)
+    # print(surface.knotvector_u,surface.knotvector_v,surface.ctrlpts_size_u,surface.ctrlpts_size_v,surface.ctrlpts)
 
     a=NURBS_Surface(control_points=surface._control_points,u_degree=surface.degree_u,v_degree=surface.degree_v,knots_vector_u=surface.knotvector_u,knots_vector_v=surface.knotvector_v
-                    ,visualisation=True,delta=0.01)
+                    ,visualisation=True,delta=0.05)
 
     a.visualize("default")
     

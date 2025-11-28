@@ -3,26 +3,39 @@ import torch
 class HashGrid:
     def __init__(self, bounding_box, resolution=128, hash_size=2**20):
         """
+        initialize the hash grid
+        3D space is divided into a grid of cells, each cell is hashed into a hash table
+        :param bounding_box: 3D space boundary [x_min, x_max, y_min, y_max, z_min, z_max]
+        :param resolution: grid resolution i.e., the length of each grid cell (default is 128)
+        :param hash_size: size of the hash table (default is 2^20)        
+        """
+        """
         初始化哈希网格
+        3D空间被划分为网格单元，每个单元被哈希到哈希表中
         :param bounding_box: 空间边界 [x_min, x_max, y_min, y_max, z_min, z_max]
-        :param resolution: 网格分辨率
-        :param hash_size: 哈希表大小
+        :param resolution: 网格分辨率 即网格单元的边长 (默认为 128)
+        :param hash_size: 哈希表大小 即哈希表的大小 (默认为 2^20)
         """
         self.bbox = torch.tensor(bounding_box, device='cuda', dtype=torch.float32)
         self.res = resolution
         self.hash_size = hash_size
         self.cell_size = (self.bbox[1::2] - self.bbox[::2]) / resolution
         
+        # hash_table: save point indices in each grid cell
         # 哈希表：存储每个网格单元包含的点索引
         self.hash_table = [[] for _ in range(hash_size)]
         
+        # random hash function parameters
         # 随机哈希函数参数
         self.hash_params = torch.randint(0, 2**20, (3, hash_size), device='cuda', dtype=torch.int32)
 
     def _hash(self, indices):
+        """calculate hash value for 3D grid indices"""
         """计算三维网格索引的哈希值"""
         x, y, z = indices.unbind(1)
-        return (x * self.hash_params[0] ^ y * self.hash_params[1] ^ z * self.hash_params[2]) % self.hash_size
+        # 确保 self.hash_params 的形状与 x, y, z 匹配
+        hash_params = self.hash_params[:, 0]  # 使用每个维度的第一个参数
+        return (x * hash_params[0] ^ y * hash_params[1] ^ z * hash_params[2]) % self.hash_size
 
     def build(self, points):
         """构建哈希网格"""

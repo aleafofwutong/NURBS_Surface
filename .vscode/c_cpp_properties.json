@@ -4,15 +4,17 @@
             "name": "Win32",
             "includePath": [
                 "${workspaceFolder}/**",
-                "./NURBS_Surface_env/**",
-                "./trying/include"
+                "${workspaceFolder}/NURBS_Surface_env/**",
+                "${workspaceFolder}/trying/include/**",
+                "${workspaceFolder}/NURBS_Surface_env/Lib/site-packages/torch/include/torch/**",
+                "${workspaceFolder}/NURBS_Surface_env/Lib/site-packages/torch/include/**"
             ],
             "defines": [
                 "_DEBUG",
                 "UNICODE",
                 "_UNICODE"
             ],
-            "compilerPath": "D:\\00MinGW\\bin\\gcc.exe",
+            "compilerPath": "D:/00MinGW/bin/g++.exe",
             "cStandard": "c11",
             "cppStandard": "gnu++14",
             "intelliSenseMode": "windows-gcc-x86"
